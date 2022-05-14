@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;400;900&display=swap");
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* general */
+  --border-r: 3px;
+
+  /* fonts */
+  --main-font: "Noto Sans", sans-serif;
+
+  /* color pallet */
+  --b: black;
+  --off-black: rgba(20, 33, 61, 0.7);
+  --oxford-blue: #14213d;
+  --oxford-blue-soft: #14213d59;
+  --orange-web: #fca311;
+  --orange-web-soft: #fca3110d;
+  --platinum-dark: #666666;
+  --platinum-dark-soft: #66666680;
+  --platinum: #e5e5e5;
+  --off-white: rgba(255, 255, 255, 0.7);
+
+  /* theme mode */
+  --light-mode-on: var(--orange-web);
+  --dark-mode-on: var(--oxford-blue);
+  --mode-off: var(--platinum);
+
+  /* menu */
+  --menu-tab-border: 1px solid gray;
+  --menu-tab-padding: 0.5rem;
+}
+
+:root[theme="light"] {
+  /* bg */
+  --primary-bg: transparent;
+  --secondary-bg: var(--off-white);
+
+  /* font */
+  --primary-font-clr: var(--oxford-blue);
+  --secondary-font-clr: var(--orange-web);
+
+  /* nav */
+  --nav-btn-trail-clr: var(--orange-web);
+  --nav-btn-bg-clr: var(--orange-web-soft);
+
+  /* menu */
+  --menu-icon: var(--oxford-blue);
+  --menu-bg-clr: var(--platinum);
+  --menu-txt-clr: var(--orange-web);
+  --menu-sub-txt-clr: var(--platinum-dark);
+
+  /* bg svg */
+  --svg-bg-fill: var(--oxford-blue-soft);
+
+  /* form */
+  --input-outline-clr: rgba(0, 0, 0, 0.7);
+
+  /* button */
+  --primary-btn-bg: var(--oxford-blue);
+  --primary-btn-txt: var(--orange-web);
+  --btn-brightness: 1.2;
+}
+
+:root[theme="dark"] {
+  /* bg */
+  --primary-bg: var(--oxford-blue);
+  --secondary-bg: var(--off-black);
+
+  /* font */
+  --primary-font-clr: white;
+  --secondary-font-clr: var(--orange-web);
+
+  /* nav */
+  --nav-btn-trail-clr: var(--orange-web);
+  --nav-btn-bg-clr: var(--orange-web-soft);
+
+  /* menu */
+  --menu-icon: var(--platinum);
+  --menu-bg-clr: var(--platinum-dark);
+  --menu-txt-clr: var(--orange-web);
+  --menu-sub-txt-clr: var(--platinum);
+
+  /* bg svg */
+  --svg-bg-fill: var(--platinum-dark);
+
+  /* form */
+  --input-outline-clr: rgba(255, 255, 255, 0.7);
+
+  /* button */
+  --primary-btn-bg: var(--orange-web);
+  --primary-btn-txt: var(--oxford-blue);
+  --btn-brightness: 0.85;
+}
+
+html,
+body {
+  font-family: var(--main-font, Arial, Helvetica, sans-serif);
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
+
+input,
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}

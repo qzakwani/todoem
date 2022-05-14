@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%svelte.assets%/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="%svelte.assets%/style.css" />
+    <script>
+      const t = localStorage.getItem("theme");
+      if (t) {
+        document.documentElement.setAttribute("theme", t);
+      }
+    </script>
+    %svelte.head%
+  </head>
+  <body>
+    %svelte.body%
+  </body>
+</html>
