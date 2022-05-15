@@ -1,17 +1,33 @@
 <script>
   export let text;
-  export let href;
+  export let href = false;
 </script>
 
-<a {href} class="nav-btn">{text}</a>
+{#if href}
+  <a {href} class="nav-btn">{text}</a>
+{:else}
+  <button on:click class="nav-btn">{text}</button>
+{/if}
 
 <style>
+  button {
+    border: none;
+    outline: none;
+    appearance: none;
+    background: none;
+
+    cursor: pointer;
+  }
+
   .nav-btn {
     display: block;
     font-weight: 400;
     color: var(--primary-font-clr, black);
     padding: 1.5rem;
     position: relative;
+    letter-spacing: 1.5px;
+    font-family: var(--main-font, arial);
+    font-size: 1rem;
   }
 
   .nav-btn::after {

@@ -5,6 +5,13 @@
   import { goto } from "$app/navigation";
   import { isLoggedIn } from "$lib/stores";
 
+  import ThemeChanger from "$lib/components/ThemeChanger.svelte";
+  import NavButton from "$lib/components/NavButton.svelte";
+  import SettingsMenu from "$lib/components/SettingsMenu.svelte";
+  import BG from "$lib/components/bg/BG.svelte";
+  import BGChanger from "$lib/components/bg/BGChanger.svelte";
+  import logo from "$lib/assets/logo.svg";
+
   onMount(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -31,18 +38,77 @@
   }
 </script>
 
-{#if $isLoggedIn}
-  <header>
-    <nav>
-      <ul>
-        <li><button on:click={logout}>Logout</button></li>
-      </ul>
-    </nav>
-  </header>
+<svelte:head>
+  <title>todoem</title>
+</svelte:head>
 
-  <main class="main">
+<BG />
+
+<header>
+  <a href="/" class="logo">
+    <img src={logo} alt="logo" width="30px" height="30px" />
+    <h1>todo<span>em</span></h1>
+  </a>
+  <nav>
+    <ul>
+      <li><NavButton href="/account/profile" text="Profile" /></li>
+      <li><NavButton on:click={logout} text="Logout" /></li>
+    </ul>
+  </nav>
+  <SettingsMenu>
+    <li><ThemeChanger /></li>
+    <li><BGChanger /></li>
+  </SettingsMenu>
+</header>
+
+{#if $isLoggedIn}
+  <main>
     <slot />
   </main>
-{:else}
-  <h1>Skeleton</h1>
 {/if}
+
+<style>
+  header {
+    padding: 0 5rem;
+    background: var(--secondary-bg);
+    z-index: 2;
+  }
+  header,
+  nav,
+  ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  ul {
+    text-decoration: none;
+    list-style: none;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  main {
+    max-width: 40rem;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h1 {
+    color: var(--primary-font-clr);
+  }
+
+  span {
+    color: var(--secondary-font-clr);
+  }
+</style>

@@ -4,6 +4,7 @@
   import SettingsMenu from "$lib/components/SettingsMenu.svelte";
   import BG from "$lib/components/bg/BG.svelte";
   import BGChanger from "$lib/components/bg/BGChanger.svelte";
+  import logo from "$lib/assets/logo.svg";
 </script>
 
 <BG />
@@ -13,7 +14,10 @@
 </svelte:head>
 
 <header>
-  <a href="/"><h1>ToDo<span>Em</span></h1></a>
+  <a href="/" class="logo">
+    <img src={logo} alt="logo" width="30px" height="30px" />
+    <h1>todo<span>em</span></h1>
+  </a>
   <nav>
     <ul>
       <li><NavButton href="/account/login" text="Login" /></li>
@@ -47,6 +51,12 @@
   ul {
     text-decoration: none;
     list-style: none;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 
   main {

@@ -1,9 +1,16 @@
 <script>
   import db from "$lib/firestore";
-  import { collection, getDocs } from "firebase/firestore";
+  import {
+    collection,
+    getDocs,
+    doc,
+    addDoc,
+    serverTimestamp,
+  } from "firebase/firestore";
   import { onMount } from "svelte";
   import { dbControl, tasks } from "$lib/stores";
   let fetching = true;
+  let task = "";
 
   onMount(async () => {
     if ($dbControl === 0) {
@@ -15,6 +22,13 @@
 
     fetching = false;
   });
+
+  async function addTask() {
+    addDoc(collection(db, "tasks"), {
+      task,
+      date: serverTimestamp(),
+    });
+  }
 </script>
 
 <div class="h">
@@ -26,3 +40,6 @@
     {/each}
   {/if}
 </div>
+
+<input type="text" bind:value={task} />
+<button on:click={addTask}>ADD</button>
