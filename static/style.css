@@ -26,6 +26,7 @@
   --platinum-dark-soft: #66666680;
   --platinum: #e5e5e5;
   --off-white: rgba(255, 255, 255, 0.7);
+  --danger-red: #ca0b00;
 
   /* theme mode */
   --light-mode-on: var(--orange-web);
@@ -66,6 +67,11 @@
   --primary-btn-bg: var(--oxford-blue);
   --primary-btn-txt: var(--orange-web);
   --btn-brightness: 1.2;
+  --danger-btn-clr: white;
+  --danger-btn-bg: var(--danger-red);
+
+  /* card */
+  --card-border: none;
 }
 
 :root[theme="dark"] {
@@ -97,6 +103,11 @@
   --primary-btn-bg: var(--orange-web);
   --primary-btn-txt: var(--oxford-blue);
   --btn-brightness: 0.85;
+  --danger-btn-clr: var(--danger-red);
+  --danger-btn-bg: white;
+
+  /* card */
+  --card-border: 1px solid var(--orange-web-soft);
 }
 
 html,

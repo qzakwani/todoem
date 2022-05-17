@@ -5,6 +5,22 @@
   import BG from "$lib/components/bg/BG.svelte";
   import BGChanger from "$lib/components/bg/BGChanger.svelte";
   import logo from "$lib/assets/logo.svg";
+  import { isLoggedIn } from "$lib/stores";
+
+  import { goto } from "$app/navigation";
+  import auth from "$lib/auth";
+  import { onAuthStateChanged } from "firebase/auth";
+  import { onMount } from "svelte";
+
+  onMount(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        $isLoggedIn = true;
+        localStorage.setItem("uid", user.uid);
+        goto("/todo");
+      }
+    });
+  });
 </script>
 
 <BG />

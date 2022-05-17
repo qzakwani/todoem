@@ -14,7 +14,7 @@
     width: 100%;
     margin: auto 0;
     padding: 2rem;
-    border-radius: 10px;
+    border-radius: var(--border-r);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,6 +22,7 @@
 
     background: var(--secondary-bg);
     color: var(--primary-font-clr);
+    border: var(--card-border);
   }
 
   form :global(label) {

@@ -1,6 +1,10 @@
 <script>
   import auth from "$lib/auth";
-  import { signInWithEmailAndPassword } from "firebase/auth";
+  import {
+    signInWithEmailAndPassword,
+    setPersistence,
+    browserLocalPersistence,
+  } from "firebase/auth";
   import Form from "$lib/components/Form.svelte";
   import { goto } from "$app/navigation";
   import Button from "$lib/components/Button.svelte";
@@ -8,11 +12,17 @@
   let email, password;
 
   async function login() {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((cred) => {
-        const user = cred.user;
-        localStorage.setItem("uid", user.uid);
-        goto("/todo");
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((cred) => {
+            const user = cred.user;
+            localStorage.setItem("uid", user.uid);
+            goto("/todo");
+          })
+          .catch((e) => {
+            console.log(e.code);
+          });
       })
       .catch((e) => {
         console.log(e.code);

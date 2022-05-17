@@ -3,31 +3,43 @@
   import {
     collection,
     getDocs,
-    doc,
     addDoc,
     serverTimestamp,
   } from "firebase/firestore";
+  import auth from "$lib/auth";
   import { onMount } from "svelte";
-  import { dbControl, tasks } from "$lib/stores";
+  import { dbControl, tasks, completedTasks } from "$lib/stores";
   let fetching = true;
   let task = "";
+  let showError = false;
 
   onMount(async () => {
-    if ($dbControl === 0) {
-      const querySnapshot = await getDocs(collection(db, "tasks"));
-      console.log(querySnapshot.docs);
-      $tasks = querySnapshot.docs;
-      $dbControl = 1;
+    if ($dbControl) {
+      const userId = localStorage.getItem("uid") || auth.currentUser.uid;
+      getDocs(collection(db, `users/${userId}/tasks`)).then((querySnapshot) => {
+        $tasks = querySnapshot.docs.filter(
+          (doc) => doc.data().cpmpleted === false
+        );
+        $completedTasks = querySnapshot.docs.filter(
+          (doc) => doc.data().cpmpleted === true
+        );
+        $dbControl = false;
+      });
     }
 
     fetching = false;
   });
 
-  async function addTask() {
-    addDoc(collection(db, "tasks"), {
-      task,
-      date: serverTimestamp(),
+  function addTask() {
+    const newTask = { task, completed: false, date: serverTimestamp() };
+    task = "";
+    const userId = localStorage.getItem("uid") || auth.currentUser.uid;
+
+    addDoc(collection(db, `users/${userId}/tasks`), newTask).catch((e) => {
+      showError = true;
     });
+
+    $tasks = [newTask, ...$tasks];
   }
 </script>
 
@@ -36,10 +48,10 @@
     <h3>Loading</h3>
   {:else}
     {#each $tasks as task}
-      <p>{task.data().task}</p>
+      <p>{task.task}</p>
     {/each}
   {/if}
 </div>
 
-<input type="text" bind:value={task} />
+<input type="text" bind:value={task} required />
 <button on:click={addTask}>ADD</button>

@@ -12,6 +12,7 @@
   {type}
   class:primary={kind == "primary"}
   class:secondary={kind == "secondary"}
+  class:danger={kind == "danger"}
   class:s={size == "s"}
   class:m={size == "m"}
   class:l={size == "l"}
@@ -49,6 +50,11 @@
     color: var(--primary-btn-bg);
     box-shadow: none;
     background-color: transparent;
+  }
+
+  .danger {
+    color: var(--danger-btn-clr);
+    background: var(--danger-btn-bg);
   }
 
   .s {

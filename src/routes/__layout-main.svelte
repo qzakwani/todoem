@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from "svelte";
   import auth from "$lib/auth";
   import { onAuthStateChanged, signOut } from "firebase/auth";
   import { goto } from "$app/navigation";
@@ -11,6 +10,7 @@
   import BG from "$lib/components/bg/BG.svelte";
   import BGChanger from "$lib/components/bg/BGChanger.svelte";
   import logo from "$lib/assets/logo.svg";
+  import { onMount } from "svelte";
 
   onMount(() => {
     onAuthStateChanged(auth, (user) => {
