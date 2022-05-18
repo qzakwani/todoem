@@ -1,28 +1,22 @@
 <script>
   import db from "$lib/firestore";
-  import {
-    collection,
-    getDocs,
-    addDoc,
-    serverTimestamp,
-  } from "firebase/firestore";
+  import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
   import auth from "$lib/auth";
   import { onMount } from "svelte";
   import { dbControl, tasks, completedTasks } from "$lib/stores";
+  import TaskCard from "$lib/components/todo/TaskCard.svelte";
   let fetching = true;
-  let task = "";
   let showError = false;
 
   onMount(async () => {
     if ($dbControl) {
       const userId = localStorage.getItem("uid") || auth.currentUser.uid;
       getDocs(collection(db, `users/${userId}/tasks`)).then((querySnapshot) => {
-        $tasks = querySnapshot.docs.filter(
-          (doc) => doc.data().cpmpleted === false
-        );
-        $completedTasks = querySnapshot.docs.filter(
-          (doc) => doc.data().cpmpleted === true
-        );
+        const fetchedData = querySnapshot.docs.map((doc) => {
+          return { id: doc.id, ...doc.data() };
+        });
+        $tasks = fetchedData.filter((t) => t.completed == false);
+        $completedTasks = fetchedData.filter((t) => t.completed == true);
         $dbControl = false;
       });
     }
@@ -30,28 +24,39 @@
     fetching = false;
   });
 
-  function addTask() {
-    const newTask = { task, completed: false, date: serverTimestamp() };
-    task = "";
+  function checkTask(taskId) {
     const userId = localStorage.getItem("uid") || auth.currentUser.uid;
-
-    addDoc(collection(db, `users/${userId}/tasks`), newTask).catch((e) => {
+    updateDoc(
+      doc(db, `users/${userId}/tasks/${taskId}`),
+      "completed",
+      true
+    ).catch((e) => {
       showError = true;
     });
 
-    $tasks = [newTask, ...$tasks];
+    console.log(taskId);
   }
 </script>
 
-<div class="h">
+<section class="tasks">
   {#if fetching}
     <h3>Loading</h3>
   {:else}
     {#each $tasks as task}
-      <p>{task.task}</p>
+      <TaskCard
+        completed={task.completed}
+        task={task.task}
+        on:click={() => checkTask(task.id)}
+      />
     {/each}
   {/if}
-</div>
+</section>
 
-<input type="text" bind:value={task} required />
-<button on:click={addTask}>ADD</button>
+<style>
+  .tasks {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+</style>
