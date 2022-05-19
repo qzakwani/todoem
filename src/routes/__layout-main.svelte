@@ -12,11 +12,14 @@
   import logo from "$lib/assets/logo.svg";
   import { onMount } from "svelte";
 
+  let profile = "profile";
+
   onMount(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         $isLoggedIn = true;
         localStorage.setItem("uid", user.uid);
+        profile = user.displayName || "profile";
       } else {
         $isLoggedIn = false;
         localStorage.removeItem("uid");
@@ -51,7 +54,8 @@
   </a>
   <nav>
     <ul>
-      <li><NavButton href="/account/profile" text="Profile" /></li>
+      <li><NavButton href="/todo" text="Tasks" /></li>
+      <li><NavButton href="/account/profile" text={profile} /></li>
       <li><NavButton on:click={logout} text="Logout" /></li>
     </ul>
   </nav>

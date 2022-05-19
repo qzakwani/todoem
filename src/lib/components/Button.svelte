@@ -1,9 +1,10 @@
 <script>
   export let text;
-  export let type;
+  export let type = "submit";
   export let kind = "primary";
   export let size = "m";
   export let animate = false;
+  export let icon = false;
 </script>
 
 <button
@@ -17,6 +18,7 @@
   class:m={size == "m"}
   class:l={size == "l"}
   class:animate
+  class:icon
 >
   {text}
 </button>
@@ -70,6 +72,16 @@
   .l {
     font-size: 1.5rem;
     padding: 0.6rem 1.8rem;
+  }
+
+  .icon {
+    padding: 0;
+    font-size: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .animate:focus {

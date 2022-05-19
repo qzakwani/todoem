@@ -1,62 +1,57 @@
 <script>
   import db from "$lib/firestore";
-  import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+  import { collection, getDocs, orderBy, query } from "firebase/firestore";
   import auth from "$lib/auth";
   import { onMount } from "svelte";
-  import { dbControl, tasks, completedTasks } from "$lib/stores";
-  import TaskCard from "$lib/components/todo/TaskCard.svelte";
+  import { dbControl, tasks, completedTasks, showTodoError } from "$lib/stores";
+
+  import AddNewTask from "$lib/components/todo/AddNewTask.svelte";
+  import Tasks from "$lib/components/todo/Tasks.svelte";
+  import CompletedTasks from "$lib/components/todo/CompletedTasks.svelte";
+  import TodoError from "$lib/components/todo/TodoError.svelte";
+  import LoadingTasks from "$lib/components/todo/LoadingTasks.svelte";
+
   let fetching = true;
-  let showError = false;
 
   onMount(async () => {
     if ($dbControl) {
       const userId = localStorage.getItem("uid") || auth.currentUser.uid;
-      getDocs(collection(db, `users/${userId}/tasks`)).then((querySnapshot) => {
-        const fetchedData = querySnapshot.docs.map((doc) => {
-          return { id: doc.id, ...doc.data() };
+      const q = query(collection(db, `users/${userId}/tasks`), orderBy("date"));
+      getDocs(q)
+        .then((querySnapshot) => {
+          const fetchedData = querySnapshot.docs.map((doc) => {
+            return { id: doc.id, ...doc.data() };
+          });
+          $tasks = fetchedData.filter((t) => t.completed == false);
+          $completedTasks = fetchedData.filter((t) => t.completed == true);
+          $dbControl = false;
+          fetching = false;
+        })
+        .catch((e) => {
+          $showTodoError = true;
         });
-        $tasks = fetchedData.filter((t) => t.completed == false);
-        $completedTasks = fetchedData.filter((t) => t.completed == true);
-        $dbControl = false;
-      });
     }
-
-    fetching = false;
   });
-
-  function checkTask(taskId) {
-    const userId = localStorage.getItem("uid") || auth.currentUser.uid;
-    updateDoc(
-      doc(db, `users/${userId}/tasks/${taskId}`),
-      "completed",
-      true
-    ).catch((e) => {
-      showError = true;
-    });
-
-    console.log(taskId);
-  }
 </script>
 
-<section class="tasks">
+<article>
+  <AddNewTask />
   {#if fetching}
-    <h3>Loading</h3>
+    <LoadingTasks />
   {:else}
-    {#each $tasks as task}
-      <TaskCard
-        completed={task.completed}
-        task={task.task}
-        on:click={() => checkTask(task.id)}
-      />
-    {/each}
+    <Tasks />
+    <CompletedTasks />
   {/if}
-</section>
+</article>
+
+{#if $showTodoError}
+  <TodoError />
+{/if}
 
 <style>
-  .tasks {
+  article {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    height: 100%;
+    background: var(--secondary-bg);
   }
 </style>
