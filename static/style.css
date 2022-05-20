@@ -42,6 +42,7 @@
   /* bg */
   --primary-bg: transparent;
   --secondary-bg: var(--off-white);
+  --popup-bg: white;
 
   /* font */
   --primary-font-clr: var(--oxford-blue);
@@ -87,6 +88,7 @@
   /* bg */
   --primary-bg: var(--oxford-blue);
   --secondary-bg: var(--off-black);
+  --popup-bg: var(--oxford-blue);
 
   /* font */
   --primary-font-clr: white;

@@ -24,7 +24,16 @@
 </script>
 
 <section class="completed-tasks">
-  <h1>Completed Tasks</h1>
+  <div class="title">
+    <h1>Completed Tasks</h1>
+    <div class="delete-all">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
+        ><path
+          d="M30 36.5V33.5H37.25V36.5ZM30 18.1V15.1H44V18.1ZM30 27.3V24.3H41.75V27.3ZM9.5 40Q8.3 40 7.4 39.1Q6.5 38.2 6.5 37V14H25.5V37Q25.5 38.2 24.6 39.1Q23.7 40 22.5 40ZM4 13V10H10.2L12.2 8H19.8L21.8 10H28V13Z"
+        /></svg
+      >
+    </div>
+  </div>
   {#each $completedTasks as task, i}
     <TaskCard
       completed={task.completed}
@@ -35,6 +44,24 @@
 </section>
 
 <style>
+  .title {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .delete-all {
+    width: 1.7rem;
+    height: 1.7rem;
+    cursor: pointer;
+    fill: var(--menu-sub-txt-clr);
+  }
+
+  .delete-all:hover {
+    fill: var(--primary-font-clr);
+  }
+
   .completed-tasks {
     margin-top: 2rem;
     width: 100%;
