@@ -54,7 +54,7 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    width: 12rem;
+    width: 16rem;
     border-radius: var(--border-r, 3px);
   }
 

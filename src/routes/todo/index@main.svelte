@@ -3,7 +3,13 @@
   import { collection, getDocs, orderBy, query } from "firebase/firestore";
   import auth from "$lib/auth";
   import { onMount } from "svelte";
-  import { dbControl, tasks, completedTasks, showTodoError } from "$lib/stores";
+  import {
+    dbControl,
+    tasks,
+    completedTasks,
+    showTodoError,
+    hideCompletedTasks,
+  } from "$lib/stores";
 
   import AddNewTask from "$lib/components/todo/AddNewTask.svelte";
   import Tasks from "$lib/components/todo/Tasks.svelte";
@@ -40,7 +46,9 @@
     <LoadingTasks />
   {:else}
     <Tasks />
-    <CompletedTasks />
+    {#if !$hideCompletedTasks}
+      <CompletedTasks />
+    {/if}
   {/if}
 </article>
 

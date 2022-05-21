@@ -65,13 +65,19 @@
       </div>
     {/if}
   </div>
-  {#each $tasks as task, i}
-    <TaskCard
-      completed={task.completed}
-      task={task.task}
-      on:click={() => checkTask(task.id, i)}
-    />
-  {/each}
+  {#if $tasks.length > 0}
+    {#each $tasks as task, i}
+      <TaskCard
+        index={i}
+        taskId={task.id}
+        completed={task.completed}
+        task={task.task}
+        on:click={() => checkTask(task.id, i)}
+      />
+    {/each}
+  {:else}
+    <p class="note">No tasks yet</p>
+  {/if}
 </section>
 
 {#if askConfirmation}
@@ -114,5 +120,12 @@
     color: var(--menu-sub-txt-clr);
     letter-spacing: 3px;
     text-transform: uppercase;
+  }
+
+  .note {
+    color: rgba(128, 128, 128, 0.7);
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
   }
 </style>

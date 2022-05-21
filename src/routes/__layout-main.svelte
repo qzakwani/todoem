@@ -9,6 +9,7 @@
   import SettingsMenu from "$lib/components/SettingsMenu.svelte";
   import BG from "$lib/components/bg/BG.svelte";
   import BGChanger from "$lib/components/bg/BGChanger.svelte";
+  import HideCompletedTasks from "$lib/components/todo/HideCompletedTasks.svelte";
   import logo from "$lib/assets/logo.svg";
   import { onMount } from "svelte";
 
@@ -60,6 +61,7 @@
     </ul>
   </nav>
   <SettingsMenu>
+    <li><HideCompletedTasks /></li>
     <li><ThemeChanger /></li>
     <li><BGChanger /></li>
   </SettingsMenu>
