@@ -20,7 +20,7 @@
       if (user) {
         $isLoggedIn = true;
         localStorage.setItem("uid", user.uid);
-        profile = user.displayName || "profile";
+        profile = user.displayName || "Profile";
       } else {
         $isLoggedIn = false;
         localStorage.removeItem("uid");
