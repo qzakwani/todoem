@@ -33,7 +33,7 @@
       batch.delete(docRef);
     });
     batch.commit().catch((e) => {
-      showTodoError = true;
+      $showTodoError = true;
     });
 
     $completedTasks = [];

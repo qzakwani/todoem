@@ -36,6 +36,8 @@
         .catch((e) => {
           $showTodoError = true;
         });
+    } else {
+      fetching = false;
     }
   });
 </script>

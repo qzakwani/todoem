@@ -6,6 +6,10 @@
   if (user === null) {
     goto("account/login");
   }
+  const ARreg = /[\u0600-\u06FF]/;
+  let arTask = false;
+  $: dir = arTask ? "rtl" : "ltr";
+
   let editEmail = "pre";
   let editName = "pre";
   let deactivateConfirmation = false;
@@ -37,7 +41,14 @@
       <td class="label">Name</td>
       <td class="field">
         {#if editName === "edit"}
-          <input type="text" bind:value={name} />
+          <input
+            type="text"
+            bind:value={name}
+            {dir}
+            on:keyup={() => {
+              arTask = ARreg.test(name);
+            }}
+          />
         {:else}
           {user.displayName}
         {/if}
@@ -97,7 +108,7 @@
     padding: 0.7rem;
     border: none;
     width: 100%;
-    background: none;
+    background: var(--new-task-trail);
     font-size: 1rem;
 
     color: var(--primary-font-clr);
@@ -107,6 +118,5 @@
 
   input:focus {
     border-bottom: 2px solid var(--new-task-trail-focus);
-    background: var(--new-task-trail);
   }
 </style>

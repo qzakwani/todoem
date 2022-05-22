@@ -34,7 +34,7 @@
       task.completed = true;
     });
     batch.commit().catch((e) => {
-      showTodoError = true;
+      $showTodoError = true;
     });
 
     $completedTasks = [...$tasks, ...$completedTasks];

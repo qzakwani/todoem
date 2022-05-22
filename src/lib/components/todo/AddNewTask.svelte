@@ -7,6 +7,10 @@
 
   let task = "";
 
+  const ARreg = /[\u0600-\u06FF]/;
+  let arTask = false;
+  $: dir = arTask ? "rtl" : "ltr";
+
   function addTask() {
     if (!task) {
       return;
@@ -24,7 +28,16 @@
 </script>
 
 <div class="container">
-  <input type="text" bind:value={task} required placeholder="New Task" />
+  <input
+    type="text"
+    bind:value={task}
+    required
+    placeholder="New Task"
+    {dir}
+    on:keyup={() => {
+      arTask = ARreg.test(task);
+    }}
+  />
   <Button text="&plus;" icon on:click={addTask} />
 </div>
 
