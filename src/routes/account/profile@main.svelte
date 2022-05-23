@@ -12,6 +12,7 @@
 
   let editEmail = "pre";
   let editName = "pre";
+  let errorMsg = false;
   let deactivateConfirmation = false;
 
   import Button from "$lib/components/Button.svelte";
@@ -30,13 +31,26 @@
       });
   }
 
-  function changeEmail() {}
+  function changeEmail() {
+    editEmail = "pending";
+    updateEmail(auth.currentUser, email)
+      .then(() => {
+        editEmail = "success";
+      })
+      .catch((e) => {
+        if (e.code === "auth/requires-recent-login") {
+          errorMsg = "Edit failed: Requires recent login. Please login again!";
+        }
+        editEmail = "error";
+      });
+  }
 </script>
 
 <article class="profile">
-  <h1>Profile: {user.displayName}</h1>
+  <h1>Profile: {name}</h1>
 
   <table>
+    <!-- Name -->
     <tr class:editing={editName === "edit"}>
       <td class="label">Name</td>
       <td class="field">
@@ -50,9 +64,10 @@
             }}
           />
         {:else}
-          {user.displayName}
+          {name}
         {/if}
-
+      </td>
+      <td class="edit">
         <ChangeStatus
           status={editName}
           saveFunction={changeName}
@@ -61,6 +76,31 @@
           }}
           cancelEdit={() => {
             editName = "pre";
+          }}
+        />
+      </td>
+    </tr>
+
+    <!-- Email -->
+    <tr class:editing={editEmail === "edit"}>
+      <td class="label">Email</td>
+      <td class="field">
+        {#if editEmail === "edit"}
+          <input type="text" bind:value={email} />
+        {:else}
+          {email}
+        {/if}
+      </td>
+      <td class="edit">
+        <ChangeStatus
+          status={editEmail}
+          saveFunction={changeEmail}
+          {errorMsg}
+          startEdit={() => {
+            editEmail = "edit";
+          }}
+          cancelEdit={() => {
+            editEmail = "pre";
           }}
         />
       </td>
@@ -94,10 +134,15 @@
     color: gray;
   }
   .field {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.5rem; */
     color: var(--primary-font-clr);
+  }
+
+  .edit {
+    display: flex;
+    justify-content: right;
   }
 
   .editing {

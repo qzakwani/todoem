@@ -21,12 +21,13 @@
   --oxford-blue: #14213d;
   --oxford-blue-soft: #14213d59;
   --orange-web: #fca311;
-  --orange-web-soft: #fca3110d;
+  --orange-web-soft: #fca3111a;
   --platinum-dark: #666666;
   --platinum-dark-soft: #66666680;
   --platinum: #e5e5e5;
   --off-white: rgba(255, 255, 255, 0.7);
   --danger-red: #ca0b00;
+  --success-green: #4bb543;
 
   /* theme mode */
   --light-mode-on: var(--orange-web);
