@@ -1,6 +1,11 @@
 <script>
   import auth from "$lib/auth";
-  import { updateEmail, updateProfile } from "firebase/auth";
+  import {
+    updateEmail,
+    updateProfile,
+    updatePassword,
+    deleteUser,
+  } from "firebase/auth";
   import { goto } from "$app/navigation";
   const user = auth.currentUser;
   if (user === null) {
@@ -12,16 +17,23 @@
 
   let editEmail = "pre";
   let editName = "pre";
+  let editPassword = "pre";
   let errorMsg = false;
   let deactivateConfirmation = false;
+  let deactivateError = false;
 
   import Button from "$lib/components/Button.svelte";
   import ChangeStatus from "$lib/components/profile/ChangeStatus.svelte";
+  import PopUp from "$lib/components/PopUp.svelte";
   let name = user.displayName;
   let email = user.email;
+  let password = "";
 
   function changeName() {
     editName = "pending";
+    if (auth.currentUser === null) {
+      goto("/account/login");
+    }
     updateProfile(auth.currentUser, { displayName: name })
       .then(() => {
         editName = "success";
@@ -33,6 +45,9 @@
 
   function changeEmail() {
     editEmail = "pending";
+    if (auth.currentUser === null) {
+      goto("/account/login");
+    }
     updateEmail(auth.currentUser, email)
       .then(() => {
         editEmail = "success";
@@ -44,10 +59,45 @@
         editEmail = "error";
       });
   }
+
+  function changePassword() {
+    editPassword = "pending";
+    if (auth.currentUser === null) {
+      goto("/account/login");
+    }
+    updatePassword(auth.currentUser, password)
+      .then(() => {
+        editPassword = "success";
+      })
+      .catch((e) => {
+        if (e.code === "auth/requires-recent-login") {
+          errorMsg = "Edit failed: Requires recent login. Please login again!";
+        }
+        editPassword = "error";
+      });
+  }
+
+  function deactivateAccount() {
+    if (auth.currentUser === null) {
+      goto("/account/login");
+    }
+
+    deleteUser(auth.currentUser)
+      .then(() => {
+        goto("/");
+      })
+      .catch((e) => {
+        deactivateConfirmation = false;
+        if (e.code === "auth/requires-recent-login") {
+          errorMsg = "Edit failed: Requires recent login. Please login again!";
+        }
+        deactivateError = true;
+      });
+  }
 </script>
 
 <article class="profile">
-  <h1>Profile: {name}</h1>
+  <h1 class="profile-name">Profile: {name}</h1>
 
   <table>
     <!-- Name -->
@@ -105,16 +155,83 @@
         />
       </td>
     </tr>
+
+    <!-- Password -->
+    <tr class:editing={editPassword === "edit"}>
+      <td class="label">Password</td>
+      <td class="field">
+        {#if editPassword === "edit"}
+          <input
+            type="password"
+            bind:value={password}
+            placeholder="New Password"
+            minlength="8"
+            required
+          />
+        {:else}
+          ********
+        {/if}
+      </td>
+      <td class="edit">
+        <ChangeStatus
+          status={editPassword}
+          saveFunction={changePassword}
+          {errorMsg}
+          startEdit={() => {
+            editPassword = "edit";
+          }}
+          cancelEdit={() => {
+            editPassword = "pre";
+          }}
+        />
+      </td>
+    </tr>
   </table>
 
-  <!-- <Button text="Deactivate" kind="danger" animate /> -->
+  <!-- Deactivate -->
+  <div class="deactivate">
+    <Button
+      text="Deactivate"
+      kind="danger"
+      animate
+      on:click={() => {
+        deactivateConfirmation = true;
+      }}
+    />
+    {#if deactivateError}
+      <ChangeStatus status="error" {errorMsg} />
+    {/if}
+  </div>
 </article>
+
+{#if deactivateConfirmation}
+  <PopUp
+    question="Are you sure? NOTE: must have signed in recently!"
+    rejectFunc={deactivateAccount}
+    successFunc={() => {
+      deactivateConfirmation = false;
+    }}
+    btn1="Cancel"
+    btn2="Deactivate"
+  />
+{/if}
 
 <style>
   .profile {
     height: 100%;
     width: 100%;
     background: var(--secondary-bg);
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .profile-name {
+    color: var(--primary-font-clr);
+    padding: 0.5rem;
+    width: 100%;
+    text-align: center;
   }
 
   table {
@@ -163,5 +280,13 @@
 
   input:focus {
     border-bottom: 2px solid var(--new-task-trail-focus);
+  }
+
+  .deactivate {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 0.5rem;
   }
 </style>

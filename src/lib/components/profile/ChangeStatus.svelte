@@ -1,10 +1,10 @@
 <script>
   import Button from "$lib/components/Button.svelte";
 
-  export let status;
-  export let saveFunction;
-  export let startEdit;
-  export let cancelEdit;
+  export let status = false;
+  export let saveFunction = false;
+  export let startEdit = false;
+  export let cancelEdit = false;
   export let errorMsg = false;
 
   function reloadPage() {
