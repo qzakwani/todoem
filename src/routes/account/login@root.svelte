@@ -8,10 +8,15 @@
   import Form from "$lib/components/Form.svelte";
   import { goto } from "$app/navigation";
   import Button from "$lib/components/Button.svelte";
+  import Loading from "$lib/components/Loading.svelte";
+  import ErrorMsg from "$lib/components/ErrorMsg.svelte";
 
-  let email, password;
+  let email, password, errorMsg;
+  let loading = false;
+  let showError = true;
 
   async function login() {
+    loading = true;
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
         signInWithEmailAndPassword(auth, email, password)
@@ -25,10 +30,15 @@
           });
       })
       .catch((e) => {
-        console.log(e.code);
+        errorMsg = "Something went wrong. Please Try again!";
+        showError = true;
       });
   }
 </script>
+
+{#if showError}
+  <ErrorMsg msg="test" degree="testoo" />
+{/if}
 
 <Form on:submit={login} title="Login">
   <label for="email"
@@ -44,3 +54,7 @@
 
   <Button type="submit" text="Login" animate="true" />
 </Form>
+
+{#if loading}
+  <Loading />
+{/if}
