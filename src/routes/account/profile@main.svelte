@@ -21,11 +21,14 @@
   let errorMsg = false;
   let deactivateConfirmation = false;
   let deactivateError = false;
+  let loading = false;
 
   import Button from "$lib/components/Button.svelte";
   import ChangeStatus from "$lib/components/profile/ChangeStatus.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
-  let name = user.displayName;
+  import Loading from "$lib/components/Loading.svelte";
+
+  let name = user.displayName || "User";
   let email = user.email;
   let password = "";
 
@@ -78,6 +81,7 @@
   }
 
   function deactivateAccount() {
+    loading = true;
     if (auth.currentUser === null) {
       goto("/account/login");
     }
@@ -92,6 +96,7 @@
           errorMsg = "Edit failed: Requires recent login. Please login again!";
         }
         deactivateError = true;
+        loading = false;
       });
   }
 </script>
@@ -214,6 +219,10 @@
     btn1="Cancel"
     btn2="Deactivate"
   />
+{/if}
+
+{#if loading}
+  <Loading />
 {/if}
 
 <style>

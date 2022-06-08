@@ -13,7 +13,7 @@
   import logo from "$lib/assets/logo.svg";
   import { onMount } from "svelte";
 
-  let profile = "profile";
+  let profile = "Profile";
 
   onMount(() => {
     onAuthStateChanged(auth, (user) => {
@@ -37,7 +37,7 @@
         goto("/account/login");
       })
       .catch((e) => {
-        console.log(e.code);
+        goto("/todo");
       });
   }
 </script>

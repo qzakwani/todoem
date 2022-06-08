@@ -11,9 +11,9 @@
   import Loading from "$lib/components/Loading.svelte";
   import ErrorMsg from "$lib/components/ErrorMsg.svelte";
 
-  let email, password, errorMsg;
+  let email, password, msg;
   let loading = false;
-  let showError = true;
+  let showError = false;
 
   async function login() {
     loading = true;
@@ -26,35 +26,50 @@
             goto("/todo");
           })
           .catch((e) => {
-            console.log(e.code);
+            msg = "email or password is invalid!";
+            showError = true;
+            loading = false;
           });
       })
       .catch((e) => {
-        errorMsg = "Something went wrong. Please Try again!";
+        msg = "Something went wrong. Please Try again!";
         showError = true;
+        loading = false;
       });
   }
 </script>
 
-{#if showError}
-  <ErrorMsg msg="test" degree="testoo" />
-{/if}
+<div class="container">
+  {#if showError}
+    <ErrorMsg {msg} degree="danger" />
+  {/if}
 
-<Form on:submit={login} title="Login">
-  <label for="email"
-    >Email
-    <br />
-    <input type="email" id="email" bind:value={email} required />
-  </label>
-  <label for="password"
-    >Password
-    <br />
-    <input type="password" id="password" bind:value={password} required />
-  </label>
+  <Form on:submit={login} title="Login">
+    <label for="email"
+      >Email
+      <br />
+      <input type="email" id="email" bind:value={email} required />
+    </label>
+    <label for="password"
+      >Password
+      <br />
+      <input type="password" id="password" bind:value={password} required />
+    </label>
 
-  <Button type="submit" text="Login" animate="true" />
-</Form>
+    <Button type="submit" text="Login" animate="true" />
+  </Form>
+</div>
 
 {#if loading}
   <Loading />
 {/if}
+
+<style>
+  .container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+  }
+</style>
