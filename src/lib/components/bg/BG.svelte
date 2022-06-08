@@ -1,6 +1,5 @@
 <script>
   import CircuitBoard from "./CircuitBoard.svelte";
-  import WorldMap from "./WorldMap.svelte";
   import Sprinkle from "./Sprinkle.svelte";
   import SimpleShiny from "./SimpleShiny.svelte";
   import MassCircles from "./MassCircles.svelte";
@@ -12,8 +11,6 @@
 <div class="bg">
   {#if $bg == "circuitboard"}
     <CircuitBoard />
-  {:else if $bg == "worldmap"}
-    <WorldMap />
   {:else if $bg == "sprinkle"}
     <Sprinkle />
   {:else if $bg == "simpleshiny"}

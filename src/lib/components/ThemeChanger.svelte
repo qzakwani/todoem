@@ -1,4 +1,5 @@
 <script>
+  export let seperator = true;
   import { browser } from "$app/env";
   let theme = browser && (localStorage.getItem("theme") || "light");
   // $: document.documentElement.setAttribute("theme", theme);
@@ -11,7 +12,7 @@
   $: browser && changeTheme(theme);
 </script>
 
-<div class="container">
+<div class="container" class:seperator>
   <label class="light-label">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -46,6 +47,9 @@
     align-items: center;
     justify-content: space-around;
     padding: var(--menu-tab-padding);
+  }
+
+  .seperator {
     border-bottom: var(--menu-tab-border);
   }
 

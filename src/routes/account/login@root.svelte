@@ -10,6 +10,7 @@
   import Button from "$lib/components/Button.svelte";
   import Loading from "$lib/components/Loading.svelte";
   import ErrorMsg from "$lib/components/ErrorMsg.svelte";
+  import { phoneMode } from "$lib/stores";
 
   let email, password, msg;
   let loading = false;
@@ -56,7 +57,23 @@
       <input type="password" id="password" bind:value={password} required />
     </label>
 
-    <Button type="submit" text="Login" animate="true" />
+    <div class="btns">
+      <Button type="submit" text="Login" animate />
+      {#if !$phoneMode}
+        <div class="right">
+          <Button
+            text="Sign Up"
+            animate
+            size="s"
+            kind="secondary"
+            type="button"
+            on:click={() => {
+              goto("/account/register");
+            }}
+          />
+        </div>
+      {/if}
+    </div>
   </Form>
 </div>
 
@@ -71,5 +88,18 @@
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
+  }
+
+  .btns {
+    width: 100%;
+    position: relative;
+    text-align: center;
+  }
+
+  .right {
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    transform: translateY(50%);
   }
 </style>

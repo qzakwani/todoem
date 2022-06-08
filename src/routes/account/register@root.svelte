@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import Button from "$lib/components/Button.svelte";
   import Loading from "$lib/components/Loading.svelte";
+  import { phoneMode } from "$lib/stores";
   import ErrorMsg from "$lib/components/ErrorMsg.svelte";
 
   let msg;
@@ -86,8 +87,23 @@
         minlength="8"
       />
     </label>
-
-    <Button type="submit" text="Sign up" animate="true" />
+    <div class="btns">
+      <Button type="submit" text="Sign up" animate />
+      {#if !$phoneMode}
+        <div class="right">
+          <Button
+            text="login"
+            animate
+            size="s"
+            kind="secondary"
+            type="button"
+            on:click={() => {
+              goto("/account/login");
+            }}
+          />
+        </div>
+      {/if}
+    </div>
   </Form>
 </div>
 
@@ -102,5 +118,18 @@
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
+  }
+
+  .btns {
+    width: 100%;
+    position: relative;
+    text-align: center;
+  }
+
+  .right {
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    transform: translateY(50%);
   }
 </style>

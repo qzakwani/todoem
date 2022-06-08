@@ -1,8 +1,9 @@
 <script>
   export let title = "";
+  import { phoneMode } from "$lib/stores";
 </script>
 
-<form on:submit|preventDefault class="card">
+<form on:submit|preventDefault class="card" class:mobile={$phoneMode}>
   {#if title}
     <h3>{title}</h3>
   {/if}
@@ -11,8 +12,8 @@
 
 <style>
   form {
-    width: 100%;
-    margin: auto 0;
+    width: 70%;
+    margin: auto;
     padding: 2rem;
     border-radius: var(--border-r);
     display: flex;
@@ -23,6 +24,10 @@
     background: var(--secondary-bg);
     color: var(--primary-font-clr);
     border: var(--card-border);
+  }
+
+  form.mobile {
+    width: 100%;
   }
 
   form :global(label) {

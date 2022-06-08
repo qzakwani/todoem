@@ -61,6 +61,7 @@
 
   /* bg svg */
   --svg-bg-fill: var(--oxford-blue-soft);
+  --world-map-clr: var(--oxford-blue);
 
   /* form */
   --input-outline-clr: rgba(0, 0, 0, 0.7);
@@ -107,6 +108,7 @@
 
   /* bg svg */
   --svg-bg-fill: var(--platinum-dark);
+  --world-map-clr: white;
 
   /* form */
   --input-outline-clr: rgba(255, 255, 255, 0.7);

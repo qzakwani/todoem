@@ -2,7 +2,7 @@
   import auth from "$lib/auth";
   import { onAuthStateChanged, signOut } from "firebase/auth";
   import { goto } from "$app/navigation";
-  import { isLoggedIn } from "$lib/stores";
+  import { isLoggedIn, phoneMode } from "$lib/stores";
 
   import ThemeChanger from "$lib/components/ThemeChanger.svelte";
   import NavButton from "$lib/components/NavButton.svelte";
@@ -12,6 +12,11 @@
   import HideCompletedTasks from "$lib/components/todo/HideCompletedTasks.svelte";
   import logo from "$lib/assets/logo.svg";
   import { onMount } from "svelte";
+  import { browser } from "$app/env";
+
+  if (browser) {
+    localStorage.getItem("mode") ? ($phoneMode = true) : ($phoneMode = false);
+  }
 
   let profile = "Profile";
 
@@ -53,18 +58,20 @@
     <img src={logo} alt="logo" width="30px" height="30px" />
     <h1>todo<span>em</span></h1>
   </a>
-  <nav>
-    <ul>
-      <li><NavButton href="/todo" text="Tasks" /></li>
-      <li><NavButton href="/account/profile" text={profile} /></li>
-      <li><NavButton on:click={logout} text="Logout" /></li>
-    </ul>
-  </nav>
-  <SettingsMenu>
-    <li><HideCompletedTasks /></li>
-    <li><ThemeChanger /></li>
-    <li><BGChanger /></li>
-  </SettingsMenu>
+  <div class="header-right">
+    <nav>
+      <ul>
+        <li><NavButton href="/todo" text="Tasks" /></li>
+        <li><NavButton href="/account/profile" text={profile} /></li>
+        <li><NavButton on:click={logout} text="Logout" /></li>
+      </ul>
+    </nav>
+    <SettingsMenu>
+      <li><HideCompletedTasks /></li>
+      <li><ThemeChanger /></li>
+      <li><BGChanger /></li>
+    </SettingsMenu>
+  </div>
 </header>
 
 {#if $isLoggedIn}
@@ -85,6 +92,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   ul {

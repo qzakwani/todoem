@@ -20,7 +20,10 @@
   </button>
 
   {#if showMenu}
-    <menu transition:fade={{ delay: 250, duration: 300 }}>
+    <menu
+      transition:fade={{ delay: 250, duration: 300 }}
+      on:click={() => (showMenu = !showMenu)}
+    >
       <h3 class="menu-title">Settings</h3>
       <slot />
     </menu>

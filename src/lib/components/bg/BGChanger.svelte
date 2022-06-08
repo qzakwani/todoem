@@ -20,10 +20,6 @@
     Spinkle
     <input type="radio" bind:group={$bg} value="sprinkle" hidden />
   </label>
-  <label class:s={$bg == "worldmap"}>
-    World Map
-    <input type="radio" bind:group={$bg} value="worldmap" hidden />
-  </label>
   <label class:s={$bg == "simpleshiny"}>
     Simple Shiny
     <input type="radio" bind:group={$bg} value="simpleshiny" hidden />

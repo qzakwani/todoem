@@ -10,6 +10,13 @@
       if (t) {
         document.documentElement.setAttribute("theme", t);
       }
+
+      const s = window.screen.availWidth;
+      if (s < 770) {
+        localStorage.setItem("mode", "mobile");
+      } else {
+        localStorage.removeItem("mode");
+      }
     </script>
     %svelte.head%
   </head>

@@ -28,6 +28,7 @@
     letter-spacing: 1.5px;
     font-family: var(--main-font, arial);
     font-size: 1rem;
+    text-align: center;
   }
 
   .nav-btn::after {
