@@ -1,4 +1,7 @@
 <script>
+  export let profile = "";
+  export let logout = "";
+
   import logo from "$lib/assets/logo.svg";
   import ThemeChanger from "$lib/components/ThemeChanger.svelte";
   import NavButton from "$lib/components/NavButton.svelte";
@@ -6,6 +9,8 @@
   import { quintOut } from "svelte/easing";
   import { onMount } from "svelte";
   import { isLoggedIn } from "$lib/stores";
+  import HideCompletedTasks from "$lib/components/todo/HideCompletedTasks.svelte";
+  import BGChanger from "$lib/components/bg/BGChanger.svelte";
 
   let showMenu = false;
 
@@ -52,15 +57,32 @@
       style="height: calc(100vh - {delta}px);"
       transition:fly={{ duration: 300, y: 500, opacity: 0, easing: quintOut }}
     >
-      <ul
-        on:click={() => {
-          showMenu = false;
-        }}
-      >
-        <li><NavButton href="/account/login" text="Login" /></li>
-        <li><NavButton href="/account/register" text="Sign Up" /></li>
-        <li><ThemeChanger seperator={false} /></li>
-      </ul>
+      {#if $isLoggedIn}
+        <ul
+          on:click={() => {
+            showMenu = false;
+          }}
+        >
+          <li><NavButton href="/todo" text="Tasks" /></li>
+          <li><NavButton href="/account/profile" text={profile} /></li>
+          <li style="display: flex; justify-content: center; width: 100%;">
+            <NavButton on:click={logout} text="Logout" />
+          </li>
+          <li><HideCompletedTasks /></li>
+          <li><ThemeChanger /></li>
+          <li><BGChanger /></li>
+        </ul>
+      {:else}
+        <ul
+          on:click={() => {
+            showMenu = false;
+          }}
+        >
+          <li><NavButton href="/account/login" text="Login" /></li>
+          <li><NavButton href="/account/register" text="Sign Up" /></li>
+          <li><ThemeChanger seperator={false} /></li>
+        </ul>
+      {/if}
     </nav>
   </div>
 {/if}
@@ -86,8 +108,9 @@
     top: 0;
     left: 0;
     width: 100vw;
-    background-color: var(--secondary-bg);
+    background-color: var(--menu-bg-clr-mobile, gray);
     z-index: 100;
+    color: var(--primary-font-clr, gray);
   }
   button {
     background: none;

@@ -40,7 +40,8 @@
     width: 1.3rem;
     height: 1.3rem;
     border-radius: 100%;
-    background: white;
+    background: gray;
+
     outline-offset: 0;
 
     transition: all 100ms linear;

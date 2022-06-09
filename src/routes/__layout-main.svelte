@@ -3,6 +3,7 @@
   import { onAuthStateChanged, signOut } from "firebase/auth";
   import { goto } from "$app/navigation";
   import { isLoggedIn, phoneMode } from "$lib/stores";
+  import MobileHeader from "$lib/components/mobile/MobileHeader.svelte";
 
   import ThemeChanger from "$lib/components/ThemeChanger.svelte";
   import NavButton from "$lib/components/NavButton.svelte";
@@ -53,29 +54,33 @@
 
 <BG />
 
-<header>
-  <a href="/" class="logo">
-    <img src={logo} alt="logo" width="30px" height="30px" />
-    <h1>todo<span>em</span></h1>
-  </a>
-  <div class="header-right">
-    <nav>
-      <ul>
-        <li><NavButton href="/todo" text="Tasks" /></li>
-        <li><NavButton href="/account/profile" text={profile} /></li>
-        <li><NavButton on:click={logout} text="Logout" /></li>
-      </ul>
-    </nav>
-    <SettingsMenu>
-      <li><HideCompletedTasks /></li>
-      <li><ThemeChanger /></li>
-      <li><BGChanger /></li>
-    </SettingsMenu>
-  </div>
-</header>
+{#if $phoneMode}
+  <MobileHeader {profile} {logout} />
+{:else}
+  <header>
+    <a href="/" class="logo">
+      <img src={logo} alt="logo" width="30px" height="30px" />
+      <h1>todo<span>em</span></h1>
+    </a>
+    <div class="header-right">
+      <nav>
+        <ul>
+          <li><NavButton href="/todo" text="Tasks" /></li>
+          <li><NavButton href="/account/profile" text={profile} /></li>
+          <li><NavButton on:click={logout} text="Logout" /></li>
+        </ul>
+      </nav>
+      <SettingsMenu>
+        <li><HideCompletedTasks /></li>
+        <li><ThemeChanger /></li>
+        <li><BGChanger /></li>
+      </SettingsMenu>
+    </div>
+  </header>
+{/if}
 
 {#if $isLoggedIn}
-  <main>
+  <main class:mobile={$phoneMode}>
     <slot />
   </main>
 {/if}
@@ -121,6 +126,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  main.mobile {
+    max-width: 95%;
+    padding: 0;
   }
 
   h1 {

@@ -27,6 +27,7 @@
   import ChangeStatus from "$lib/components/profile/ChangeStatus.svelte";
   import PopUp from "$lib/components/PopUp.svelte";
   import Loading from "$lib/components/Loading.svelte";
+  import { phoneMode } from "$lib/stores";
 
   let name = user.displayName || "User";
   let email = user.email;
@@ -101,7 +102,7 @@
   }
 </script>
 
-<article class="profile">
+<article class="profile" class:mobile={$phoneMode}>
   <h1 class="profile-name">Profile: {name}</h1>
 
   <table>
@@ -236,6 +237,10 @@
     gap: 2rem;
   }
 
+  .profile.mobile {
+    justify-content: center;
+  }
+
   .profile-name {
     color: var(--primary-font-clr);
     padding: 0.5rem;
@@ -254,6 +259,10 @@
   }
   td {
     padding: 1.5rem;
+  }
+
+  .mobile td {
+    padding: 0.5rem;
   }
 
   .label {
@@ -285,6 +294,10 @@
     color: var(--primary-font-clr);
     caret-color: var(--new-task-trail-focus);
     border-bottom: 2px solid var(--new-task-trail);
+  }
+
+  .mobile input {
+    padding: 0.3rem;
   }
 
   input:focus {

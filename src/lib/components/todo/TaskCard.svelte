@@ -68,7 +68,11 @@
     align-items: center;
     justify-content: center;
     width: 1rem;
+    min-width: 1rem;
+    max-width: 1rem;
     height: 1rem;
+    min-height: 1rem;
+    max-height: 1rem;
     border-radius: 100%;
     outline: 1px solid var(--task-check-clr);
     transition: all 150ms linear;
